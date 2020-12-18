@@ -11,21 +11,10 @@ const createMatrix = () => {
     .map(() => Array(matrixSize).fill(' '));
 }
 
-const moveDown = (position) => {
-  return [position[0] === matrixSize - 1 ? 0 : position[0] + 1, position[1]];
-};
-
-const moveUp = (position) => {
-  return [position[0] === 0 ? matrixSize - 1 : position[0] - 1, position[1]];
-};
-
-const moveRight = (position) => {
-  return [position[0], position[1] === matrixSize - 1 ? 0 : position[1] + 1];
-};
-
-const moveLeft = (position) => {
-  return [position[0], position[1] === 0 ? matrixSize - 1 : position[1] - 1];
-};
+const moveDown = position => [position[0] === matrixSize - 1 ? 0 : position[0] + 1, position[1]];
+const moveUp = position => [position[0] === 0 ? matrixSize - 1 : position[0] - 1, position[1]];
+const moveRight = position => [position[0], position[1] === matrixSize - 1 ? 0 : position[1] + 1];
+const moveLeft = position => [position[0], position[1] === 0 ? matrixSize - 1 : position[1] - 1];
 
 const updateSnakePosition = () => {
   // Add new head position to snake
@@ -37,33 +26,33 @@ const updateSnakePosition = () => {
 
 const looper = () => {
   setTimeout(() => {
-  const boardMatrix = createMatrix();
+    const boardMatrix = createMatrix();
 
-  console.clear();
+    console.clear();
 
-  updateSnakePosition();
-  addSnakeToMatrix(boardMatrix);
+    updateSnakePosition();
+    addSnakeToMatrix(boardMatrix);
 
-  // Check if snake has eaten itself
-  const snakePositionNums = snakePosition.map(val => val.join('')).slice(1);
+    // Check if snake has eaten itself
+    const snakePositionNums = snakePosition.map(val => val.join('')).slice(1);
 
-  if (snakePositionNums.includes(snakePosition[0].join(''))) {
-    console.log('Game over!')
-    console.log(`You scored ${snakePosition.length - 2}`)
-    return;
-  }
+    if (snakePositionNums.includes(snakePosition[0].join(''))) {
+      console.log('Game over!')
+      console.log(`You scored ${snakePosition.length - 2}`)
+      return;
+    }
 
-  // Check if food has been eaten
-  if (snakePosition[0].join('') === foodPosition.join('')) {
-    // Add extra segment to snake
-    snakePosition.push(foodPosition);
-    createNewFoodPosition(boardMatrix);
-  }
+    // Check if food has been eaten
+    if (snakePosition[0].join('') === foodPosition.join('')) {
+      // Add extra segment to snake
+      snakePosition.push(foodPosition);
+      createNewFoodPosition(boardMatrix);
+    }
 
-  // Add food peice to board
-  boardMatrix[foodPosition[0]][foodPosition[1]] = '0';
+    // Add food peice to board
+    boardMatrix[foodPosition[0]][foodPosition[1]] = '0';
 
-  console.log(boardMatrix);
+    console.log(boardMatrix);
   
     looper();
   }, 250);
