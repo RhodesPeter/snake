@@ -72,13 +72,15 @@ const listenToKeypress = () => {
   process.stdin.on('keypress', (str, key) => {
     if (key.ctrl && key.name === 'c') {
       process.exit();
-    } else if (directionFunctions.hasOwnProperty(key.name)){
-    const newDir = key.name;
-    const lat = ['left','right'];
-    const vert = ['up', 'down'];
+    }
+    
+    if (directionFunctions.hasOwnProperty(key.name)){
+      const newDir = key.name;
+      const lat = ['left','right'];
+      const vert = ['up', 'down'];
 
-    // Don't allow snake to turn around on the same row or column
-    if (lat.includes(newDir) && lat.includes(direction) || vert.includes(newDir) && vert.includes(direction)) return;
+      // Don't allow snake to turn around on the same row or column
+      if (lat.includes(newDir) && lat.includes(direction) || vert.includes(newDir) && vert.includes(direction)) return;
       
       direction = key.name;
     }
