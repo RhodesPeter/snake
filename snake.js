@@ -1,9 +1,12 @@
 const readline = require('readline');
 
-const matrixSize = 10;
+const matrixSize = 15;
 const snakePosition = [[1, 0], [0, 0]];
 let foodPosition = [];
 let direction = 'down';
+
+// To stop multiple moves being made during each loop
+let hasMoveBeenMadeThisLoop = false;
 
 const createMatrix = () => {
   return Array(matrixSize)
@@ -25,6 +28,8 @@ const updateSnakePosition = () => {
 };
 
 const looper = () => {
+  hasMoveBeenMadeThisLoop = false;
+
   setTimeout(() => {
     const boardMatrix = createMatrix();
 
@@ -74,7 +79,9 @@ const listenToKeypress = () => {
       process.exit();
     }
     
-    if (directionFunctions.hasOwnProperty(key.name)){
+    if (directionFunctions.hasOwnProperty(key.name) && !hasMoveBeenMadeThisLoop) {
+      hasMoveBeenMadeThisLoop = true;
+
       const newDir = key.name;
       const lat = ['left','right'];
       const vert = ['up', 'down'];
@@ -93,12 +100,9 @@ const createNewFoodPosition = (matrix) => {
     .filter(_=>_));
 
   const freeSpacesFlat = freeSpaces.reduce((a, b) => a.concat(b), []);
-  const randomLocation = [Math.floor(Math.random() * freeSpacesFlat.length) + 1];
-  const locationArr = randomLocation.toString().split('').map(Number);
+  const randomLocation = freeSpacesFlat[Math.floor(Math.random() * freeSpacesFlat.length) + 1];
 
-  if (locationArr.length === 1) locationArr.unshift(0);
-
-  foodPosition = locationArr;
+  foodPosition = randomLocation;
 }
 
 const addSnakeToMatrix = (matrix) => {
